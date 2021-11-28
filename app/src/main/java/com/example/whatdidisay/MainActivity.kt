@@ -22,6 +22,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         //TODO Add history/edit view
+        val historyButton = findViewById<Button>(R.id.history_button)
+        historyButton.setOnClickListener{
+            //val intent = Intent(this, HistoryActivity::class.java)
+            val sdf = SimpleDateFormat("dd.MM.yyyy")
+            val currentDate = sdf.format(Date())
+            //intent.putExtra("date", currentDate) // Pass the date to the acvity so the latest recordings can be shown
+            //startActivity(intent)
+        }
 
         //TODO Add settings menu
     }
