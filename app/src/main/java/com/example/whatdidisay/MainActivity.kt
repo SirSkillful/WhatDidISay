@@ -8,6 +8,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+    companion object {
+        const val SHARED_PREFS = "sharedPrefs"
+        const val EXPORT_LOC = "exportLoc" //Loc stands for location
+        const val AUDIO_LOC = "audioLoc"
+        const val FW_TIME = "fwTime"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -31,6 +38,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //TODO Add settings menu
+        val settingsButton = findViewById<Button>(R.id.settings_button)
+        settingsButton.setOnClickListener{
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
     }
 }
