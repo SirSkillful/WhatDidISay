@@ -48,6 +48,32 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     /**
+     * Get all titles of the entries from the database for a given day
+     */
+    fun getTitles(date: String): List<String>{
+        val projection = arrayOf(TITLE_COLUMN)
+        val selection = "$DATE_COLUMN = ?"
+        val selectionArgs = arrayOf(date)
+        val cursor = db.query(
+            RECORDING_TABLE_NAME,
+            projection,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+        var retList = mutableListOf<String>()
+        with(cursor) {
+            if (moveToNext()) {
+                val text = getString(getColumnIndexOrThrow(TITLE_COLUMN))
+                retList.add(text)
+            }
+        }
+        return retList
+    }
+
+    /**
      * Add a recording to the database.
      * Audio recording is optional
      */
