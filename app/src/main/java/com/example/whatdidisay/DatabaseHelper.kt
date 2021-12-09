@@ -51,7 +51,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, DATABASE_NAME
      * Add a recording to the database.
      * Audio recording is optional
      */
-    private fun addRecording(date: String, title: String, transcription: ByteArray, audio: ByteArray? = null): Boolean {
+    fun addRecording(date: String, title: String, transcription: ByteArray, audio: ByteArray? = null): Boolean {
         val values = ContentValues().apply{
             put(DATE_COLUMN, date)
             put(TITLE_COLUMN, title)
@@ -68,7 +68,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, DATABASE_NAME
      * Update the entries of a specified recording.
      * Either update the transcription, the sound file or both
      */
-    private fun updateRecording(date: String, title: String, transcription: ByteArray? = null, audio: ByteArray? = null): Boolean{
+    fun updateRecording(date: String, title: String, transcription: ByteArray? = null, audio: ByteArray? = null): Boolean{
         val values = ContentValues().apply{
             transcription?.let{
                 put(TRANSCRIPTION_COLUMN, transcription)
@@ -88,7 +88,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, DATABASE_NAME
     /**
      * Get the data of a specific recording from the database in form a of a recording object
      */
-    private fun getRecording(date: String, title: String): Recording?{
+    fun getRecording(date: String, title: String): Recording?{
         val projection = arrayOf(DATE_COLUMN, TITLE_COLUMN, TRANSCRIPTION_COLUMN, AUDIO_COLUMN)
         val selection = "$DATE_COLUMN LIKE ? AND $TITLE_COLUMN LIKE ?"
         val selectionArgs = arrayOf(date, title)
@@ -118,7 +118,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, DATABASE_NAME
     /**
      * Delete a recording and associated text
      */
-    private fun deleteRecording(date: String, title: String): Boolean{
+    fun deleteRecording(date: String, title: String): Boolean{
         //Select the recording
         val selection = "$DATE_COLUMN LIKE ? AND $TITLE_COLUMN LIKE ?"
         val selectionArgs = arrayOf(date, title)

@@ -48,7 +48,7 @@
         tools:layout_editor_absoluteX="10dp">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/transcript_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -57,7 +57,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/date_text"
+            android:id="@+id/transcript_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,7 +76,7 @@
         tools:layout_editor_absoluteX="1dp">
 
         <Button
-            android:id="@+id/backtrack_button"
+            android:id="@+id/apply_button"
             android:layout_width="65dp"
             android:layout_height="56dp"
             android:layout_marginRight="10dp"
@@ -84,14 +84,14 @@
             app:icon="@android:drawable/ic_media_previous" />
 
         <Button
-            android:id="@+id/record_button"
+            android:id="@+id/cancel_button"
             android:layout_width="63dp"
             android:layout_height="53dp"
             android:backgroundTint="@color/primary_button_color"
             app:icon="@android:drawable/ic_btn_speak_now" />
 
         <Button
-            android:id="@+id/forward_button"
+            android:id="@+id/add_image_button"
             android:layout_width="65dp"
             android:layout_height="54dp"
             android:layout_marginLeft="10dp"

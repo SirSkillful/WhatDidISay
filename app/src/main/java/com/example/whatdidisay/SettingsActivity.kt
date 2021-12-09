@@ -53,7 +53,7 @@ class SettingsActivity : AppCompatActivity() {
 
         //Load entries from shared preferences
         val forwardInput = findViewById<TextView>(R.id.forward_time_input)
-        forwardInput.text = sharedPrefs.getInt(MainActivity.FW_TIME, 5).toString() //TODO Fix issue translating the value to a string
+        //forwardInput.text = sharedPrefs.getInt(MainActivity.FW_TIME, 5).toString() //TODO Fix issue translating the value to a string
         val expLocInput = findViewById<TextView>(R.id.export_path_input)
         expLocInput.text = sharedPrefs.getString(MainActivity.EXPORT_LOC, "")
         val audioLocInput = findViewById<TextView>(R.id.audio_path_input)

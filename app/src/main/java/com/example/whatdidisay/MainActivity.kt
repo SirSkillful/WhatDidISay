@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val recordingButton = findViewById<Button>(R.id.record_button)
+        val recordingButton = findViewById<Button>(R.id.cancel_button)
         recordingButton.setOnClickListener{
             val intent = Intent(this, RecordingActivity::class.java)
             val sdf = SimpleDateFormat("dd.MM.yyyy") // German date format

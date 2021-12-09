@@ -12,6 +12,7 @@
         <activity android:name=".RecordingActivity" android:parentActivityName=".MainActivity"/>
         <activity android:name=".HistoryActivity" android:parentActivityName=".MainActivity"/>
         <activity android:name=".SettingsActivity" android:parentActivityName=".MainActivity"/>
+        <activity android:name=".EditActivity" android:parentActivityName=".HistoryActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

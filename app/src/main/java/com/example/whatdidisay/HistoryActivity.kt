@@ -63,6 +63,10 @@ class HistoryActivity : AppCompatActivity() {
                 dateText.text = "$monthString - $year" // Set the text view text to show the month's name and year in the shown format
             }
         })
+
+        //TODO Call the edit screen when the edit button is pressed
+        //Pass the date and title to the edit activity in the intent (key "date" for date and "title" for the title
+        //Date has to have the sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
     }
 
     /**
