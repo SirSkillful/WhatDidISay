@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/back_button"
-        android:layout_width="78dp"
+        android:layout_width="20dp"
         android:layout_height="0dp"
         android:layout_marginBottom="9dp"
         android:backgroundTint="#EA6077"
@@ -17,7 +17,8 @@
         android:textAlignment="center"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/calendar_month_text"
-        app:layout_constraintStart_toStartOf="@+id/history_label"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -25,40 +26,35 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="11dp"
-        android:layout_marginBottom="407dp"
         android:text="Meeting history"
         android:textAlignment="center"
         android:textColor="#3C3C3C"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <sun.bob.mcalendarview.MCalendarView
         android:id="@+id/calendar_view"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="331dp"
+        android:layout_height="393dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="35dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="53dp"
         android:background="#393E46"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/history_label">
+        app:layout_constraintTop_toBottomOf="@+id/history_label">
 
     </sun.bob.mcalendarview.MCalendarView>
 
     <TextView
         android:id="@+id/calendar_month_text"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="366dp"
+        android:layout_width="194dp"
+        android:layout_height="29dp"
         android:background="#FD7041"
         android:gravity="center|center_horizontal"
         android:text="TextView"
@@ -66,123 +62,49 @@
         android:textColor="#3C3C3C"
         android:textSize="16dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/back_button" />
-
-    <TableLayout
-        android:id="@+id/tableLayout"
-        android:layout_width="350dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="2dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/history_label">
-
-        <TableRow
-            android:layout_width="387dp"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/row1_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/date_row2"
-                    android:layout_width="75dp"
-                    android:layout_height="match_parent"
-                    android:text="10:00"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/meetingName_row2"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="Hello Meeting"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:id="@+id/editButton_row1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
-
-                <ImageButton
-                    android:id="@+id/exportButton_row1"
-                    android:layout_width="58dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="?attr/actionModeShareDrawable" />
-
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="388dp"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:id="@+id/row2_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/date_row"
-                    android:layout_width="75dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="14:00"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:id="@+id/meetingName_row"
-                    android:layout_width="150dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="World Meeting"
-                    android:textSize="20sp" />
-
-                <ImageButton
-                    android:id="@+id/editButton_row2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
-
-                <ImageButton
-                    android:id="@+id/exportButton_row2"
-                    android:layout_width="58dp"
-                    android:layout_height="match_parent"
-                    app:srcCompat="?attr/actionModeShareDrawable" />
-
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </TableRow>
-    </TableLayout>
+        app:layout_constraintTop_toTopOf="@+id/calendar_view" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="411dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_begin="20dp"
+        app:layout_constraintStart_toEndOf="@+id/back_button" />
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="373dp"
+        android:layout_height="251dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="416dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="3dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/history_label"
+        app:layout_constraintVertical_bias="0.52">
+
+        <LinearLayout
+            android:id="@+id/row_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/column_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"/>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

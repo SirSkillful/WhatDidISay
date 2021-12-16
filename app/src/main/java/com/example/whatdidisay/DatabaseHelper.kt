@@ -65,7 +65,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         )
         var retList = mutableListOf<String>()
         with(cursor) {
-            if (moveToNext()) {
+            while (moveToNext()) {
                 val text = getString(getColumnIndexOrThrow(TITLE_COLUMN))
                 retList.add(text)
             }
@@ -78,6 +78,7 @@ class DatabaseHelper (context: Context): SQLiteOpenHelper(context, DATABASE_NAME
      * Audio recording is optional
      */
     fun addRecording(date: String, title: String, transcription: ByteArray, audio: ByteArray? = null): Boolean {
+
         val values = ContentValues().apply{
             put(DATE_COLUMN, date)
             put(TITLE_COLUMN, title)
