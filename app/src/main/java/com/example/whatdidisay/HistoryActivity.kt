@@ -30,10 +30,6 @@ import sun.bob.mcalendarview.vo.DayData
 import java.io.File
 
 
-
-
-
-
 class HistoryActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +62,7 @@ class HistoryActivity : AppCompatActivity() {
                 unmarkDates()
                 calendarView.markDate(
                    DateData(date.year, date.month, date.day).setMarkStyle(MarkStyle(MarkStyle.DOT, Color.parseColor(
-                       "#ff8800"
+                       "#fd7014"
                    ))))
             }
 
@@ -155,19 +151,31 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun createExportDialog(): AlertDialog.Builder {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage("Choose file type")
-            .setPositiveButton("Export as .txt", DialogInterface.OnClickListener { dialog, id ->
+        builder.setTitle("Choose file type")
+            .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
                 exportAsTxt()
             })
-            .setNeutralButton("Export as .pdf", DialogInterface.OnClickListener { dialog, id ->
-                exportData()
-            })
+            //.setNeutralButton("Export as .pdf", DialogInterface.OnClickListener { dialog, id ->
+             //   exportData()
+            //})
             .setNegativeButton("cancel",
                 DialogInterface.OnClickListener { dialog, id ->
                     // User cancelled the dialog
-                })
-        builder.create()
-        return builder
+            })
+            val options = arrayOf(".txt", ".pdf")
+            val singleChoiceDialog = AlertDialog.Builder(this)
+                .setTitle("Choose file type")
+                .setSingleChoiceItems(options, 0) {dialogInterface, i ->
+                    Toast.makeText(this, "You clicked on ${options[i]}", Toast.LENGTH_SHORT).show()}
+                            .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
+                                exportAsTxt()
+                            })
+                .setNegativeButton("cancel",
+                                DialogInterface.OnClickListener { dialog, id ->
+                                    // User cancelled the dialog
+                            })
+        singleChoiceDialog.create()
+        return singleChoiceDialog
         // Create the AlertDialog object and return it
 
     }
@@ -193,9 +201,9 @@ class HistoryActivity : AppCompatActivity() {
         val dbHelper = DatabaseHelper(this)
         val arr = ByteArray(8)
         //dbHelper.addRecording(date.toString(), date.toString(), arr)
-        val titles = dbHelper.getTitles(date.toString())
+        val titles = dbHelper.getTitles(date)
         for (x in titles){
-            val record = dbHelper.getRecording(date.toString(), x)
+            val record = dbHelper.getRecording(date, x)
             if (record != null) {
                 this.createNewRow(record.date, record.title)
             }
