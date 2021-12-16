@@ -19,6 +19,8 @@
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:textColor="@color/white"
+        android:hint="Ready to start recording."
+        android:textColorHint="#696969"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -76,7 +78,7 @@
         tools:layout_editor_absoluteX="1dp">
 
         <Button
-            android:id="@+id/apply_button"
+            android:id="@+id/backward_record_button"
             android:layout_width="65dp"
             android:layout_height="56dp"
             android:layout_marginRight="10dp"
@@ -84,14 +86,15 @@
             app:icon="@android:drawable/ic_media_previous" />
 
         <Button
-            android:id="@+id/cancel_button"
+            android:id="@+id/record_button"
             android:layout_width="63dp"
             android:layout_height="53dp"
             android:backgroundTint="@color/primary_button_color"
-            app:icon="@android:drawable/ic_btn_speak_now" />
+            app:icon="@android:drawable/ic_btn_speak_now"
+            app:iconTint="#FFFFFF"/>
 
         <Button
-            android:id="@+id/add_image_button"
+            android:id="@+id/forward_record_button"
             android:layout_width="65dp"
             android:layout_height="54dp"
             android:layout_marginLeft="10dp"
