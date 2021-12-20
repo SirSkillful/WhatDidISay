@@ -42,6 +42,7 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         val calendarView = findViewById<MCalendarView>(R.id.calendar_view)
+
         calendarView.setOnDateClickListener(object : OnDateClickListener() {
             /**
              * Overwritten onDateClick function of the calendar view
@@ -49,6 +50,8 @@ class HistoryActivity : AppCompatActivity() {
              */
             override fun onDateClick(view: View?, date: DateData) {
                 val calendar = Calendar.getInstance()
+                val time = calendar.time
+                calendarView.markDate(DateData(time.year, time.month, time.day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
                 calendar.set(
                     date.year,
                     date.month - 1,
@@ -57,13 +60,17 @@ class HistoryActivity : AppCompatActivity() {
                 val sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
                 val currentDate =
                     sdf.format(calendar.timeInMillis) // Get the selected date in the specified format
+                val todaysDate = calendar.time
+
                 clearMeetingPreview()
                 buildMeetingPreview(currentDate)
                 unmarkDates()
                 calendarView.markDate(
-                   DateData(date.year, date.month, date.day).setMarkStyle(MarkStyle(MarkStyle.DOT, Color.parseColor(
+                   DateData(date.year, date.month, date.day).setMarkStyle(MarkStyle(MarkStyle.BACKGROUND, Color.parseColor(
                        "#fd7014"
                    ))))
+
+
             }
 
         })
@@ -84,7 +91,7 @@ class HistoryActivity : AppCompatActivity() {
         //Pass the date and title to the edit activity in the intent (key "date" for date and "title" for the title
         //Date has to have the sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
     }
-    fun callEditScreen(date: String, title: String){
+    private fun callEditScreen(date: String, title: String){
         val sendIntent = Intent(this@HistoryActivity, EditActivity::class.java)
         sendIntent.putExtra("date", date)
         sendIntent.putExtra("title", title)
@@ -96,12 +103,14 @@ class HistoryActivity : AppCompatActivity() {
      */
     override fun onResume() {
         super.onResume()
-        markDates()
+        unmarkDates()
         val sdf = SimpleDateFormat("dd-MMMM- yyyy") // Month name and year
         val currentDate = sdf.format(Date())
         val dateText = findViewById<TextView>(R.id.calendar_month_text)
         dateText.text =
-            currentDate // Set the date text view to show the month's name and year in the format specified previously
+            currentDate // Set the date te
+
+// xt view to show the month's name and year in the format specified previously
     }
 
     private fun exportData() {
@@ -145,8 +154,14 @@ class HistoryActivity : AppCompatActivity() {
             // Markings are removed and not updated because they cannot be overwritten with the new color
             val item = iterator.next()
             calendarView.unMarkDate(item)
-
     }
+        val sdf_year = SimpleDateFormat("yyyy")
+        val sdf_month = SimpleDateFormat("MM")
+        val sdf_day = SimpleDateFormat("dd")
+        val year =  sdf_year.format(Date()).toInt()
+        val month =  sdf_month.format(Date()).toInt()
+        val day =  sdf_day.format(Date()).toInt()
+        calendarView.markDate(DateData(year, month, day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
     }
 
     private fun createExportDialog(): AlertDialog.Builder {
