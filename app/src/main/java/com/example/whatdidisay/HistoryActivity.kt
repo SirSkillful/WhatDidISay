@@ -1,5 +1,6 @@
 package com.example.whatdidisay
 
+import android.Manifest
 import android.content.Context
 import android.os.Build
 import android.content.DialogInterface
@@ -28,10 +29,26 @@ import android.os.Environment
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.vo.DayData
 import java.io.File
+import androidx.core.content.FileProvider
+import java.io.FileOutputStream
+import java.io.OutputStream as OutputStream
+import androidx.core.app.ActivityCompat
+import android.widget.Toast
+
+import android.content.pm.PackageManager
+
+import androidx.annotation.NonNull
+
+
+
+
+
+
 
 
 class HistoryActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
+    private val STORAGE_PERMISSION_CODE = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_activity)
@@ -164,6 +181,7 @@ class HistoryActivity : AppCompatActivity() {
         calendarView.markDate(DateData(year, month, day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun createExportDialog(): AlertDialog.Builder {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose file type")
@@ -195,21 +213,32 @@ class HistoryActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun exportAsTxt() {
-        val targetFilePath = Environment.getExternalStorageDirectory()
-            .getPath() + File.separator + "tmp" + File.separator + "test.txt"
-        val outputStreamWriter =
-            OutputStreamWriter(openFileOutput(targetFilePath, MODE_PRIVATE))
-        outputStreamWriter.write("test")
+        requestStoragePermission()
+        val filename = "test.txt"
+        val filelocation = File(filesDir,"files")
+        filelocation.mkdirs()
+        val file = File(filelocation, filename)
+        val uri = FileProvider.getUriForFile(
+            this,
+            BuildConfig.APPLICATION_ID + ".provider",
+            file
+        )
+        //val targetFilePath = Environment.getExternalStorageDirectory().path + File.separator + "tmp" + File.separator + "test.txt"
+        val fOut = FileOutputStream(file)
+        val outputStreamWriter = OutputStreamWriter(fOut)
+        outputStreamWriter.write("Hello World!")
         outputStreamWriter.close()
-        val attachmentUri = Uri.parse(targetFilePath)
+        //val attachmentUri = Uri.parse(targetFilePath)
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "message/rfc822"
+        shareIntent.type = "vnd.android.cursor.dir/email"
         shareIntent.putExtra(Intent.EXTRA_EMAIL, "sender_mail_id")
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Meeting Name")
         shareIntent.putExtra(Intent.EXTRA_TEXT, "Text to be displayed as the content")
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://$attachmentUri"))
-        startActivity(shareIntent)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+        startActivity(Intent.createChooser(shareIntent , "Send email..."));
     }
 
     fun buildMeetingPreview(date: String) {
@@ -258,4 +287,52 @@ class HistoryActivity : AppCompatActivity() {
             callEditScreen(date, title)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        ) {
+            AlertDialog.Builder(this)
+                .setTitle("Permission needed")
+                .setMessage("This permission is needed because of this and that")
+                .setPositiveButton(
+                    "ok"
+                ) { dialog, which ->
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        STORAGE_PERMISSION_CODE
+                    )
+                }
+                .setNegativeButton(
+                    "cancel"
+                ) { dialog, which -> dialog.dismiss() }
+                .create().show()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                STORAGE_PERMISSION_CODE
+            )
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }
