@@ -1,6 +1,7 @@
 package com.example.whatdidisay
 
 import android.Manifest
+import android.R.attr
 import android.content.Context
 import android.os.Build
 import android.content.DialogInterface
@@ -36,14 +37,16 @@ import androidx.core.app.ActivityCompat
 import android.widget.Toast
 
 import android.content.pm.PackageManager
+import android.provider.DocumentsContract
 
 import androidx.annotation.NonNull
+import android.R.attr.data
+import android.graphics.Canvas
+import android.graphics.Paint
 
-
-
-
-
-
+import android.graphics.pdf.PdfDocument
+import android.util.Log
+import java.io.IOException
 
 
 class HistoryActivity : AppCompatActivity() {
@@ -186,7 +189,7 @@ class HistoryActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose file type")
             .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
-                exportAsTxt()
+                exportAsPdf()
             })
             //.setNeutralButton("Export as .pdf", DialogInterface.OnClickListener { dialog, id ->
              //   exportData()
@@ -201,7 +204,7 @@ class HistoryActivity : AppCompatActivity() {
                 .setSingleChoiceItems(options, 0) {dialogInterface, i ->
                     Toast.makeText(this, "You clicked on ${options[i]}", Toast.LENGTH_SHORT).show()}
                             .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
-                                exportAsTxt()
+                                exportAsPdf()
                             })
                 .setNegativeButton("cancel",
                                 DialogInterface.OnClickListener { dialog, id ->
@@ -239,6 +242,49 @@ class HistoryActivity : AppCompatActivity() {
         shareIntent.putExtra(Intent.EXTRA_TEXT, "Text to be displayed as the content")
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
         startActivity(Intent.createChooser(shareIntent , "Send email..."));
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun exportAsPdf() {
+        requestStoragePermission()
+        //val filename = "test.pdf"
+        val filelocation = File(filesDir,"files")
+        filelocation.mkdirs()
+        //val file = File(filelocation, filename)
+
+        val data = ("test")
+        try {
+            val file = File(filelocation, "sample.pdf")
+            file.createNewFile()
+            val fOut = FileOutputStream(file)
+            val document = PdfDocument()
+            val pageInfo = PdfDocument.PageInfo.Builder(100, 100, 1).create()
+            val page = document.startPage(pageInfo)
+            val canvas: Canvas = page.canvas
+            val paint = Paint()
+            canvas.drawText(data.toString(), 10F, 10F, paint)
+            document.finishPage(page)
+            document.writeTo(fOut)
+            document.close()
+            val uri = FileProvider.getUriForFile(
+                this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                file
+            )
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "vnd.android.cursor.dir/email"
+            shareIntent.putExtra(Intent.EXTRA_EMAIL, "sender_mail_id")
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Meeting Name")
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Text to be displayed as the content")
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            startActivity(Intent.createChooser(shareIntent , "Send email..."));
+        }
+        catch (e: IOException) {
+            Log.i("error", e.getLocalizedMessage())
+        }
+
+
     }
 
     fun buildMeetingPreview(date: String) {
