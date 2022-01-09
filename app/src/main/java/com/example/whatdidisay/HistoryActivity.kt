@@ -1,5 +1,7 @@
 package com.example.whatdidisay
 
+import android.Manifest
+import android.R.attr
 import android.content.Context
 import android.os.Build
 import android.content.DialogInterface
@@ -28,10 +30,28 @@ import android.os.Environment
 import sun.bob.mcalendarview.MarkStyle
 import sun.bob.mcalendarview.vo.DayData
 import java.io.File
+import androidx.core.content.FileProvider
+import java.io.FileOutputStream
+import java.io.OutputStream as OutputStream
+import androidx.core.app.ActivityCompat
+import android.widget.Toast
+
+import android.content.pm.PackageManager
+import android.provider.DocumentsContract
+
+import androidx.annotation.NonNull
+import android.R.attr.data
+import android.graphics.Canvas
+import android.graphics.Paint
+
+import android.graphics.pdf.PdfDocument
+import android.util.Log
+import java.io.IOException
 
 
 class HistoryActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
+    private val STORAGE_PERMISSION_CODE = 1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_activity)
@@ -42,6 +62,7 @@ class HistoryActivity : AppCompatActivity() {
         }
 
         val calendarView = findViewById<MCalendarView>(R.id.calendar_view)
+
         calendarView.setOnDateClickListener(object : OnDateClickListener() {
             /**
              * Overwritten onDateClick function of the calendar view
@@ -49,6 +70,8 @@ class HistoryActivity : AppCompatActivity() {
              */
             override fun onDateClick(view: View?, date: DateData) {
                 val calendar = Calendar.getInstance()
+                val time = calendar.time
+                calendarView.markDate(DateData(time.year, time.month, time.day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
                 calendar.set(
                     date.year,
                     date.month - 1,
@@ -57,13 +80,17 @@ class HistoryActivity : AppCompatActivity() {
                 val sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
                 val currentDate =
                     sdf.format(calendar.timeInMillis) // Get the selected date in the specified format
+                val todaysDate = calendar.time
+
                 clearMeetingPreview()
                 buildMeetingPreview(currentDate)
                 unmarkDates()
                 calendarView.markDate(
-                   DateData(date.year, date.month, date.day).setMarkStyle(MarkStyle(MarkStyle.DOT, Color.parseColor(
+                   DateData(date.year, date.month, date.day).setMarkStyle(MarkStyle(MarkStyle.BACKGROUND, Color.parseColor(
                        "#fd7014"
                    ))))
+
+
             }
 
         })
@@ -84,7 +111,7 @@ class HistoryActivity : AppCompatActivity() {
         //Pass the date and title to the edit activity in the intent (key "date" for date and "title" for the title
         //Date has to have the sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
     }
-    fun callEditScreen(date: String, title: String){
+    private fun callEditScreen(date: String, title: String){
         val sendIntent = Intent(this@HistoryActivity, EditActivity::class.java)
         sendIntent.putExtra("date", date)
         sendIntent.putExtra("title", title)
@@ -96,12 +123,14 @@ class HistoryActivity : AppCompatActivity() {
      */
     override fun onResume() {
         super.onResume()
-        markDates()
+        unmarkDates()
         val sdf = SimpleDateFormat("dd-MMMM- yyyy") // Month name and year
         val currentDate = sdf.format(Date())
         val dateText = findViewById<TextView>(R.id.calendar_month_text)
         dateText.text =
-            currentDate // Set the date text view to show the month's name and year in the format specified previously
+            currentDate // Set the date te
+
+// xt view to show the month's name and year in the format specified previously
     }
 
     private fun exportData() {
@@ -145,15 +174,22 @@ class HistoryActivity : AppCompatActivity() {
             // Markings are removed and not updated because they cannot be overwritten with the new color
             val item = iterator.next()
             calendarView.unMarkDate(item)
-
     }
+        val sdf_year = SimpleDateFormat("yyyy")
+        val sdf_month = SimpleDateFormat("MM")
+        val sdf_day = SimpleDateFormat("dd")
+        val year =  sdf_year.format(Date()).toInt()
+        val month =  sdf_month.format(Date()).toInt()
+        val day =  sdf_day.format(Date()).toInt()
+        calendarView.markDate(DateData(year, month, day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun createExportDialog(): AlertDialog.Builder {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Choose file type")
             .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
-                exportAsTxt()
+                exportAsPdf()
             })
             //.setNeutralButton("Export as .pdf", DialogInterface.OnClickListener { dialog, id ->
              //   exportData()
@@ -168,7 +204,7 @@ class HistoryActivity : AppCompatActivity() {
                 .setSingleChoiceItems(options, 0) {dialogInterface, i ->
                     Toast.makeText(this, "You clicked on ${options[i]}", Toast.LENGTH_SHORT).show()}
                             .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
-                                exportAsTxt()
+                                exportAsPdf()
                             })
                 .setNegativeButton("cancel",
                                 DialogInterface.OnClickListener { dialog, id ->
@@ -180,21 +216,75 @@ class HistoryActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun exportAsTxt() {
-        val targetFilePath = Environment.getExternalStorageDirectory()
-            .getPath() + File.separator + "tmp" + File.separator + "test.txt"
-        val outputStreamWriter =
-            OutputStreamWriter(openFileOutput(targetFilePath, MODE_PRIVATE))
-        outputStreamWriter.write("test")
+        requestStoragePermission()
+        val filename = "test.txt"
+        val filelocation = File(filesDir,"files")
+        filelocation.mkdirs()
+        val file = File(filelocation, filename)
+        val uri = FileProvider.getUriForFile(
+            this,
+            BuildConfig.APPLICATION_ID + ".provider",
+            file
+        )
+        //val targetFilePath = Environment.getExternalStorageDirectory().path + File.separator + "tmp" + File.separator + "test.txt"
+        val fOut = FileOutputStream(file)
+        val outputStreamWriter = OutputStreamWriter(fOut)
+        outputStreamWriter.write("Hello World!")
         outputStreamWriter.close()
-        val attachmentUri = Uri.parse(targetFilePath)
+        //val attachmentUri = Uri.parse(targetFilePath)
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "message/rfc822"
+        shareIntent.type = "vnd.android.cursor.dir/email"
         shareIntent.putExtra(Intent.EXTRA_EMAIL, "sender_mail_id")
+        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Meeting Name")
         shareIntent.putExtra(Intent.EXTRA_TEXT, "Text to be displayed as the content")
-        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://$attachmentUri"))
-        startActivity(shareIntent)
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+        startActivity(Intent.createChooser(shareIntent , "Send email..."));
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun exportAsPdf() {
+        requestStoragePermission()
+        //val filename = "test.pdf"
+        val filelocation = File(filesDir,"files")
+        filelocation.mkdirs()
+        //val file = File(filelocation, filename)
+
+        val data = ("test")
+        try {
+            val file = File(filelocation, "sample.pdf")
+            file.createNewFile()
+            val fOut = FileOutputStream(file)
+            val document = PdfDocument()
+            val pageInfo = PdfDocument.PageInfo.Builder(100, 100, 1).create()
+            val page = document.startPage(pageInfo)
+            val canvas: Canvas = page.canvas
+            val paint = Paint()
+            canvas.drawText(data.toString(), 10F, 10F, paint)
+            document.finishPage(page)
+            document.writeTo(fOut)
+            document.close()
+            val uri = FileProvider.getUriForFile(
+                this,
+                BuildConfig.APPLICATION_ID + ".provider",
+                file
+            )
+            val shareIntent = Intent(Intent.ACTION_SEND)
+            shareIntent.type = "vnd.android.cursor.dir/email"
+            shareIntent.putExtra(Intent.EXTRA_EMAIL, "sender_mail_id")
+            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Meeting Name")
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Text to be displayed as the content")
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
+            startActivity(Intent.createChooser(shareIntent , "Send email..."));
+        }
+        catch (e: IOException) {
+            Log.i("error", e.getLocalizedMessage())
+        }
+
+
     }
 
     fun buildMeetingPreview(date: String) {
@@ -243,4 +333,52 @@ class HistoryActivity : AppCompatActivity() {
             callEditScreen(date, title)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun requestStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        ) {
+            AlertDialog.Builder(this)
+                .setTitle("Permission needed")
+                .setMessage("This permission is needed because of this and that")
+                .setPositiveButton(
+                    "ok"
+                ) { dialog, which ->
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                        STORAGE_PERMISSION_CODE
+                    )
+                }
+                .setNegativeButton(
+                    "cancel"
+                ) { dialog, which -> dialog.dismiss() }
+                .create().show()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                STORAGE_PERMISSION_CODE
+            )
+        }
+    }
+    @RequiresApi(Build.VERSION_CODES.M)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == STORAGE_PERMISSION_CODE) {
+            if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Permission GRANTED", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }

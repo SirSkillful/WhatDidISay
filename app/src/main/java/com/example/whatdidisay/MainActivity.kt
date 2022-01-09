@@ -1,9 +1,14 @@
 package com.example.whatdidisay
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -14,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         const val AUDIO_LOC = "audioLoc"
         const val FW_TIME = "fwTime"
     }
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         val settingsButton = findViewById<Button>(R.id.settings_button)
         settingsButton.setOnClickListener{
             val intent = Intent(this, SettingsActivity::class.java)
+
             startActivity(intent)
         }
 
@@ -50,4 +58,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
 }
