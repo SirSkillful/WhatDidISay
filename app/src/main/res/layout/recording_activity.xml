@@ -7,26 +7,27 @@
     android:background="@color/background"
     tools:context=".MainActivity" >
 
+
     <EditText
         android:id="@+id/text_box"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:gravity="start|top"
+        android:hint="Ready to start recording."
         android:inputType="textMultiLine"
         android:textColor="@color/white"
-        android:hint="Ready to start recording."
         android:textColorHint="#696969"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTitle"
         tools:text="example_text" />
 
     <Button
@@ -52,7 +53,7 @@
         <TextView
             android:id="@+id/transcript_label"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="0"
             android:text="Date: "
             android:textColor="#FFFFFF"
@@ -65,6 +66,36 @@
             android:layout_weight="1"
             android:text="date_example"
             android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTitle"
+        android:layout_width="390dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_editor_absoluteX="10dp">
+
+        <TextView
+            android:id="@+id/meeting_title_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0"
+            android:text="Meeting Title:"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF" />
+
+        <EditText
+            android:id="@+id/meeting_title"
+            android:layout_width="188dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/white_round_corner_bg"
+            android:ems="10"
+            android:text="default title"
+            android:textColor="#000000" />
     </LinearLayout>
 
     <LinearLayout

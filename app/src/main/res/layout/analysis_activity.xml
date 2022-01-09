@@ -7,11 +7,22 @@
     android:background="@color/background"
     tools:context=".MainActivity" >
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="50dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="@color/primary_button_color"
+        app:icon="?attr/homeAsUpIndicator"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical"
@@ -21,45 +32,25 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/title_text"
+            android:id="@+id/analysis_activity_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="What did I say?"
+            android:text="Heatmap"
+            android:textColor="@color/text_color"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold" />
 
-        <Button
-            android:id="@+id/cancel_button"
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map_fragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="Record" />
+            tools:context=".MainActivity" />
 
-        <Button
-            android:id="@+id/history_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="History" />
-
-        <Button
-            android:id="@+id/settings_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="Settings" />
-
-        <Button
-            android:id="@+id/analysis_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="Analysis" />
 
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

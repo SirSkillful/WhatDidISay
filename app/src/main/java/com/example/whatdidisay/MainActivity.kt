@@ -43,5 +43,11 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SettingsActivity::class.java)
             startActivity(intent)
         }
+
+        val analysisButton = findViewById<Button>(R.id.analysis_button)
+        analysisButton.setOnClickListener{
+            val intent = Intent(this, AnalysisActivity::class.java)
+            startActivity(intent)
+        }
     }
 }

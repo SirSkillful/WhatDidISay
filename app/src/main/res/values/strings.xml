@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">What Did I Say</string>
+    <string name="dialog_end_recording">Do you want to end the recording?</string>
+    <string name="yes">Yes</string>
+    <string name="no">Cancel</string>
 </resources>

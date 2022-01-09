@@ -4,6 +4,8 @@
 
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <queries>
         <intent>
             <action android:name="android.speech.RecognitionService" />
@@ -18,10 +20,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatDidISay">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAwgYjXq5nfWumWvsXetSKN3gn4wTwMMYo" />
+
         <activity android:name=".RecordingActivity" android:parentActivityName=".MainActivity"/>
         <activity android:name=".HistoryActivity" android:parentActivityName=".MainActivity"/>
         <activity android:name=".SettingsActivity" android:parentActivityName=".MainActivity"/>
         <activity android:name=".EditActivity" android:parentActivityName=".HistoryActivity"/>
+        <activity android:name=".AnalysisActivity" android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,6 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
+
+
+</application>
 
 </manifest>
