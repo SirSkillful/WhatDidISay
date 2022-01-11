@@ -68,29 +68,9 @@ class HistoryActivity : AppCompatActivity() {
              * Overwritten onDateClick function of the calendar view
              * Get the selected date and start the rating activity with the data passed to it
              */
+            @RequiresApi(Build.VERSION_CODES.M)
             override fun onDateClick(view: View?, date: DateData) {
-                val calendar = Calendar.getInstance()
-                val time = calendar.time
-                calendarView.markDate(DateData(time.year, time.month, time.day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
-                calendar.set(
-                    date.year,
-                    date.month - 1,
-                    date.day
-                ) // Month -1 because apparently that's just how it works?
-                val sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
-                val currentDate =
-                    sdf.format(calendar.timeInMillis) // Get the selected date in the specified format
-                val todaysDate = calendar.time
-
-                clearMeetingPreview()
-                buildMeetingPreview(currentDate)
-                unmarkDates()
-                calendarView.markDate(
-                   DateData(date.year, date.month, date.day).setMarkStyle(MarkStyle(MarkStyle.BACKGROUND, Color.parseColor(
-                       "#fd7014"
-                   ))))
-
-
+                updateMarks(calendarView, date)
             }
 
         })
@@ -121,8 +101,10 @@ class HistoryActivity : AppCompatActivity() {
      * Overwritten onResume function called when activity is resumed
      * Reloads all the markings when the history activity is opened
      */
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
         super.onResume()
+        val calendarView = findViewById<MCalendarView>(R.id.calendar_view)
         unmarkDates()
         val sdf = SimpleDateFormat("dd-MMMM- yyyy") // Month name and year
         val currentDate = sdf.format(Date())
@@ -130,9 +112,32 @@ class HistoryActivity : AppCompatActivity() {
         dateText.text =
             currentDate // Set the date te
 
+
 // xt view to show the month's name and year in the format specified previously
     }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun updateMarks(calendarView: MCalendarView, date: DateData){
+        val calendar = Calendar.getInstance()
+        val time = calendar.time
+        calendarView.markDate(DateData(time.year, time.month, time.day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
+        calendar.set(
+            date.year,
+            date.month - 1,
+            date.day
+        ) // Month -1 because apparently that's just how it works?
+        val sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
+        val currentDate =
+            sdf.format(calendar.timeInMillis) // Get the selected date in the specified format
+        val todaysDate = calendar.time
 
+        clearMeetingPreview()
+        buildMeetingPreview(currentDate)
+        unmarkDates()
+        calendarView.markDate(
+            DateData(date.year, date.month, date.day).setMarkStyle(MarkStyle(MarkStyle.BACKGROUND, Color.parseColor(
+                "#fd7014"
+            ))))
+    }
     private fun exportData() {
         val sendIntent = Intent(Intent.ACTION_SEND)
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "Person Details")
@@ -185,27 +190,25 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun createExportDialog(): AlertDialog.Builder {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Choose file type")
-            .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
-                exportAsPdf()
-            })
-            //.setNeutralButton("Export as .pdf", DialogInterface.OnClickListener { dialog, id ->
-             //   exportData()
-            //})
-            .setNegativeButton("cancel",
-                DialogInterface.OnClickListener { dialog, id ->
-                    // User cancelled the dialog
-            })
+    private fun createExportDialog(date: String, title: String): AlertDialog.Builder {
+
             val options = arrayOf(".txt", ".pdf")
             val singleChoiceDialog = AlertDialog.Builder(this)
                 .setTitle("Choose file type")
                 .setSingleChoiceItems(options, 0) {dialogInterface, i ->
                     Toast.makeText(this, "You clicked on ${options[i]}", Toast.LENGTH_SHORT).show()}
-                            .setPositiveButton("Export", DialogInterface.OnClickListener { dialog, id ->
-                                exportAsPdf()
-                            })
+                            .setPositiveButton(
+                                "Export",
+                                DialogInterface.OnClickListener { dialog, id ->
+
+                                    if ((dialog as AlertDialog).listView.isItemChecked(0)) {
+                                        exportAsTxt(date, title)
+                                    }
+                                    else if ((dialog as AlertDialog).listView.isItemChecked(1)){
+                                        exportAsPdf(date, title)
+                                    }
+                                }
+                            )
                 .setNegativeButton("cancel",
                                 DialogInterface.OnClickListener { dialog, id ->
                                     // User cancelled the dialog
@@ -217,9 +220,11 @@ class HistoryActivity : AppCompatActivity() {
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun exportAsTxt() {
+    private fun exportAsTxt(date: String, title: String) {
         requestStoragePermission()
-        val filename = "test.txt"
+        val dbHelper = DatabaseHelper(this)
+        val recording_text = dbHelper.getRecording(date, title)?.transcription?.let {String(it)}
+        val filename = title + ".txt"
         val filelocation = File(filesDir,"files")
         filelocation.mkdirs()
         val file = File(filelocation, filename)
@@ -231,38 +236,41 @@ class HistoryActivity : AppCompatActivity() {
         //val targetFilePath = Environment.getExternalStorageDirectory().path + File.separator + "tmp" + File.separator + "test.txt"
         val fOut = FileOutputStream(file)
         val outputStreamWriter = OutputStreamWriter(fOut)
-        outputStreamWriter.write("Hello World!")
+        outputStreamWriter.write(recording_text)
         outputStreamWriter.close()
         //val attachmentUri = Uri.parse(targetFilePath)
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.type = "vnd.android.cursor.dir/email"
         shareIntent.putExtra(Intent.EXTRA_EMAIL, "sender_mail_id")
         shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Meeting Name")
-        shareIntent.putExtra(Intent.EXTRA_TEXT, "Text to be displayed as the content")
+        shareIntent.putExtra(Intent.EXTRA_SUBJECT, title)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, ("See the transcription for: $title"))
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
         startActivity(Intent.createChooser(shareIntent , "Send email..."));
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    private fun exportAsPdf() {
+    private fun exportAsPdf(date: String, title: String) {
         requestStoragePermission()
-        //val filename = "test.pdf"
+        val dbHelper = DatabaseHelper(this)
+        val recording_text = dbHelper.getRecording(date, title)?.transcription?.let {String(it)}
+        val filename = title + ".pdf"
         val filelocation = File(filesDir,"files")
         filelocation.mkdirs()
         //val file = File(filelocation, filename)
 
-        val data = ("test")
         try {
-            val file = File(filelocation, "sample.pdf")
+            val file = File(filelocation, filename)
             file.createNewFile()
             val fOut = FileOutputStream(file)
             val document = PdfDocument()
-            val pageInfo = PdfDocument.PageInfo.Builder(100, 100, 1).create()
+            val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create() //A4 Format
             val page = document.startPage(pageInfo)
             val canvas: Canvas = page.canvas
             val paint = Paint()
-            canvas.drawText(data.toString(), 10F, 10F, paint)
+            if (recording_text != null) {
+                canvas.drawText(recording_text, 10F, 10F, paint)
+            }
             document.finishPage(page)
             document.writeTo(fOut)
             document.close()
@@ -275,8 +283,8 @@ class HistoryActivity : AppCompatActivity() {
             shareIntent.type = "vnd.android.cursor.dir/email"
             shareIntent.putExtra(Intent.EXTRA_EMAIL, "sender_mail_id")
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Meeting Name")
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "Text to be displayed as the content")
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, title)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, ("See the transcription for: $title"))
             shareIntent.putExtra(Intent.EXTRA_STREAM, uri)
             startActivity(Intent.createChooser(shareIntent , "Send email..."));
         }
@@ -287,6 +295,7 @@ class HistoryActivity : AppCompatActivity() {
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     fun buildMeetingPreview(date: String) {
         val dbHelper = DatabaseHelper(this)
         val arr = ByteArray(8)
@@ -305,6 +314,7 @@ class HistoryActivity : AppCompatActivity() {
             (v.parent as ViewGroup).removeView(v)
         }
     }
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun createNewRow(date: String, title: String) {
 
         val vi =
@@ -323,7 +333,7 @@ class HistoryActivity : AppCompatActivity() {
         )
         val meetingName = findViewById<TextView>(R.id.meetingName_row)
         meetingName.text = title
-        var exportDialogBuilder = createExportDialog()
+        var exportDialogBuilder = createExportDialog(date, title)
         val exportButton = findViewById<Button>(R.id.shareButton)
         exportButton.setOnClickListener {
             exportDialogBuilder.show()
