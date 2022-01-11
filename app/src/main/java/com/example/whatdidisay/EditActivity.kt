@@ -34,7 +34,7 @@ class EditActivity : AppCompatActivity() {
             }
         }
 
-        val cancelButton = findViewById<Button>(R.id.cancel_button)
+        val cancelButton = findViewById<Button>(R.id.transcribe_button)
         cancelButton.setOnClickListener {
             // Just go back without saving the changes
             super.onBackPressed()

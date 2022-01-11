@@ -17,49 +17,67 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
 
         <TextView
             android:id="@+id/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
             android:text="What did I say?"
             android:textAlignment="center"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textColor="#FFFFFF"
+            android:textSize="40sp"
+            android:textStyle="normal" />
 
-        <Button
-            android:id="@+id/cancel_button"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/transcribe_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="Record" />
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/secondary_button_color"
+            android:text="Transcribe"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
         <Button
             android:id="@+id/history_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="History" />
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/secondary_button_color"
+            android:text="History"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
         <Button
-            android:id="@+id/settings_button"
+            android:id="@+id/analyse_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="Settings" />
-
-        <Button
-            android:id="@+id/analysis_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="Analysis" />
+            android:layout_height="80dp"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/secondary_button_color"
+            android:text="Analyse"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
 
     </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/settings_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_settings_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

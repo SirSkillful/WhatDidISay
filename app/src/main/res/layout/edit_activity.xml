@@ -84,7 +84,7 @@
             app:icon="@android:drawable/ic_input_add" />
 
         <Button
-            android:id="@+id/cancel_button"
+            android:id="@+id/transcribe_button"
             android:layout_width="63dp"
             android:layout_height="53dp"
             android:backgroundTint="@color/primary_button_color"

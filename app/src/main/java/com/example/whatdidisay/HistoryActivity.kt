@@ -292,11 +292,19 @@ class HistoryActivity : AppCompatActivity() {
         val arr = ByteArray(8)
         //dbHelper.addRecording(date.toString(), date.toString(), arr)
         val titles = dbHelper.getTitles(date)
+        val scrollView = findViewById<ScrollView>(R.id.scroll_view)
         for (x in titles){
             val record = dbHelper.getRecording(date, x)
             if (record != null) {
                 this.createNewRow(record.date, record.title)
             }
+        }
+        // Set the scroll view to be invisible if no entries have been found
+        if (titles.isEmpty()) {
+            scrollView.visibility = View.INVISIBLE
+        } else {
+            // Set the scroll view visibility to be visible
+            scrollView.visibility = View.VISIBLE
         }
     }
     fun clearMeetingPreview() {

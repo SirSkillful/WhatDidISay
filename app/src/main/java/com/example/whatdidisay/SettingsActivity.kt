@@ -61,9 +61,8 @@ class SettingsActivity : AppCompatActivity() {
             //    DocumentsContract.getTreeDocumentId(uri)
             //)
             //val path: String = getPath(this, docUri)
-
-
         }
+
         /*
         val audioBrowseButton = findViewById<Button>(R.id.audio_path_browse_button)
         audioBrowseButton.setOnClickListener{

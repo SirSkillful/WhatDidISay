@@ -3,6 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/dark_round_background.xml" value="0.5703125" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/white_round_corner_bg.xml" value="0.5703125" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/edit_activity.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/export_dialog.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/history_activity.xml" value="0.5" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/history_edit_row.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/recording_activity.xml" value="0.5" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/settings_activity.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/hendr/Documents/GitHub/MID/WhatDidISay/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/hendr/Documents/GitHub/MID/WhatDidISay/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/hendr/Documents/GitHub/MID/WhatDidISay/app/src/main/res/layout/history_activity.xml" value="0.33" />

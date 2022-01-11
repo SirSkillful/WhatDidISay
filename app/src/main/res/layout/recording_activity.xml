@@ -8,13 +8,50 @@
     tools:context=".MainActivity" >
 
 
+    <ImageButton
+        android:id="@+id/forward_record_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="20dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_forward_button" />
+
+    <ImageButton
+        android:id="@+id/record_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="20dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/forward_record_button"
+        app:layout_constraintStart_toEndOf="@+id/backward_record_button"
+        app:srcCompat="@drawable/ic_record_button" />
+
+    <ImageButton
+        android:id="@+id/backward_record_button"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="20dp"
+        android:background="@null"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_backwards_button" />
+
     <EditText
         android:id="@+id/text_box"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="0dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:gravity="start|top"
@@ -23,7 +60,7 @@
         android:textColor="@color/white"
         android:textColorHint="#696969"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/record_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,41 +133,6 @@
             android:ems="10"
             android:text="default title"
             android:textColor="#000000" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="409dp"
-        android:layout_height="79dp"
-        android:layout_marginBottom="20dp"
-        android:gravity="center_horizontal|center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="1dp">
-
-        <Button
-            android:id="@+id/backward_record_button"
-            android:layout_width="65dp"
-            android:layout_height="56dp"
-            android:layout_marginRight="10dp"
-            android:backgroundTint="@color/primary_button_color"
-            app:icon="@android:drawable/ic_media_previous" />
-
-        <Button
-            android:id="@+id/record_button"
-            android:layout_width="63dp"
-            android:layout_height="53dp"
-            android:backgroundTint="@color/primary_button_color"
-            app:icon="@android:drawable/ic_btn_speak_now"
-            app:iconTint="#FFFFFF"/>
-
-        <Button
-            android:id="@+id/forward_record_button"
-            android:layout_width="65dp"
-            android:layout_height="54dp"
-            android:layout_marginLeft="10dp"
-            android:backgroundTint="@color/primary_button_color"
-            app:icon="@android:drawable/ic_media_next" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

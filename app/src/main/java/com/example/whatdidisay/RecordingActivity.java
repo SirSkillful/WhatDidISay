@@ -26,6 +26,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,6 +37,9 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.ArrayList;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class RecordingActivity extends AppCompatActivity {
 
     private SpeechRecognizer mSpeechRecognizer;
@@ -43,10 +47,10 @@ public class RecordingActivity extends AppCompatActivity {
     private EditText meetingTitle;
     private TextView meetingDate;
     private EditText displayText;
-    private Button recordButton;
+    private ImageButton recordButton;
     private Button backButton;
-    private Button backwardRecordButton;
-    private Button forwardRecordButton;
+    private ImageButton backwardRecordButton;
+    private ImageButton forwardRecordButton;
     private String entireText = ""; // The entire meeting
     private String partialText = ""; // The part of the meeting starting from the click of the forward button
     private boolean isRecordingActive = false; // false:= recording has not started, true := currently recording
@@ -96,10 +100,10 @@ public class RecordingActivity extends AppCompatActivity {
         meetingTitle = findViewById(R.id.meeting_title);
         meetingDate = findViewById(R.id.transcript_text);
         displayText = findViewById(R.id.text_box);
-        recordButton = (Button) findViewById(R.id.record_button);
+        recordButton = (ImageButton) findViewById(R.id.record_button);
         backButton = (Button) findViewById(R.id.back_button);
-        backwardRecordButton = (Button) findViewById(R.id.backward_record_button);
-        forwardRecordButton = (Button) findViewById(R.id.forward_record_button);
+        backwardRecordButton = (ImageButton) findViewById(R.id.backward_record_button);
+        forwardRecordButton = (ImageButton) findViewById(R.id.forward_record_button);
         DatabaseHelper db = new DatabaseHelper(this);
 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
@@ -301,6 +305,10 @@ public class RecordingActivity extends AppCompatActivity {
         String currentDate = getIntent().getStringExtra("date");
         TextView dateText = (TextView) findViewById(R.id.transcript_text);
         dateText.setText(currentDate);
+        //Set the title to the current time;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
+        meetingTitle.setText(formatter.format(date));
     }
 
     public void logLocation() {
