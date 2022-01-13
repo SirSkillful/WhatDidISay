@@ -44,7 +44,6 @@ import java.io.IOException
 class HistoryActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private val STORAGE_PERMISSION_CODE = 1
-    @ExperimentalStdlibApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_activity)
@@ -93,7 +92,6 @@ class HistoryActivity : AppCompatActivity() {
      * Overwritten onResume function called when activity is resumed
      * Reloads all the markings when the history activity is opened
      */
-    @ExperimentalStdlibApi
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
         super.onResume()
@@ -102,15 +100,12 @@ class HistoryActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd-MMMM- yyyy") // Month name and year
         val currentDate = sdf.format(Date())
         val dateText = findViewById<TextView>(R.id.calendar_month_text)
-        val sdf_year = SimpleDateFormat("yyyy")
-        val sdf_month = SimpleDateFormat("MM")
-        val sdf_day = SimpleDateFormat("dd")
-        val year =  sdf_year.format(Date()).toInt()
-        val month =  sdf_month.format(Date()).toInt()
-        val day =  sdf_day.format(Date()).toInt()
-        val date = DateData(year, month, day)
-        dateText.text = currentDate // Set the date te
-        updateMarks(calendarView, date)
+        dateText.text = currentDate // Set the date text
+        // Load all the entries for the current day when loading the app
+        val date = intent.getStringExtra("date")
+        if (date != null) {
+            buildMeetingPreview(date)
+        }
 
 // xt view to show the month's name and year in the format specified previously
     }
@@ -296,6 +291,7 @@ class HistoryActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun buildMeetingPreview(date: String) {
+        clearMeetingPreview()
         val dbHelper = DatabaseHelper(this)
         val arr = ByteArray(8)
         //dbHelper.addRecording(date.toString(), date.toString(), arr)
@@ -340,7 +336,6 @@ class HistoryActivity : AppCompatActivity() {
         )
         val meetingName = findViewById<TextView>(R.id.meetingName_row)
         meetingName.text = title
-        meetingName.setTextColor(Color.WHITE)
         var exportDialogBuilder = createExportDialog(date, title)
         val exportButton = findViewById<Button>(R.id.shareButton)
         exportButton.setOnClickListener {
