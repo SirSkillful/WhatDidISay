@@ -21,27 +21,40 @@
             android:layout_width="153dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:paddingLeft="5dp"
             android:text="Meeting name"
             android:textColor="#FFFFFF"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/editButton"
-            android:layout_width="55dp"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="edit"
-            android:textSize="8sp" />
+            android:layout_gravity="center"
+            android:backgroundTint="#00FFFFFF"
+            android:backgroundTintMode="multiply"
+            android:drawableLeft="@android:drawable/ic_menu_edit"
+            android:gravity="center"
+            android:isScrollContainer="false"
+            android:shadowColor="#00FFFFFF"
+            android:textSize="8sp"
+            app:iconTint="@color/primary_button_color"
+            app:iconTintMode="multiply" />
 
         <Button
             android:id="@+id/shareButton"
-            android:layout_width="71dp"
+            style="@android:style/Widget.DeviceDefault.Button.Borderless"
+            android:layout_width="60sp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:backgroundTint="@color/primary_button_color"
-            android:text="Export"
-            android:textSize="8sp" />
+            android:layout_gravity="center"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableLeft="@android:drawable/ic_menu_share"
+            android:foregroundTint="@color/primary_button_color"
+            android:textSize="8sp"
+            app:iconGravity="start"
+            app:iconTint="@color/primary_button_color"
+            app:iconTintMode="multiply" />
 
     </LinearLayout>
 

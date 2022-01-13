@@ -2,6 +2,7 @@ package com.example.whatdidisay
 
 import android.Manifest
 import android.R.attr
+import android.R.attr.actionModeShareDrawable
 import android.content.Context
 import android.os.Build
 import android.content.DialogInterface
@@ -57,12 +58,11 @@ class HistoryActivity : AppCompatActivity() {
         setContentView(R.layout.history_activity)
 
         val backButton = findViewById<Button>(R.id.back_button)
-        backButton.setOnClickListener {
+        backButton.setOnClickListener{
             super.onBackPressed()
         }
 
         val calendarView = findViewById<MCalendarView>(R.id.calendar_view)
-
         calendarView.setOnDateClickListener(object : OnDateClickListener() {
             /**
              * Overwritten onDateClick function of the calendar view
@@ -349,6 +349,7 @@ class HistoryActivity : AppCompatActivity() {
         val editButton = findViewById<Button>(R.id.editButton)
         editButton.setOnClickListener{
             callEditScreen(date, title)
+
         }
     }
     @RequiresApi(Build.VERSION_CODES.M)
