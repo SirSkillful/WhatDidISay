@@ -18,7 +18,7 @@
 
         <TextView
             android:id="@+id/meetingName_row"
-            android:layout_width="153dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingLeft="5dp"
@@ -50,6 +50,21 @@
             android:layout_gravity="center"
             android:backgroundTint="#00FFFFFF"
             android:drawableLeft="@android:drawable/ic_menu_share"
+            android:foregroundTint="@color/primary_button_color"
+            android:textSize="8sp"
+            app:iconGravity="start"
+            app:iconTint="@color/primary_button_color"
+            app:iconTintMode="multiply" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@android:style/Widget.DeviceDefault.Button.Borderless"
+            android:layout_width="60sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:backgroundTint="#00FFFFFF"
+            android:drawableLeft="@android:drawable/ic_menu_delete"
             android:foregroundTint="@color/primary_button_color"
             android:textSize="8sp"
             app:iconGravity="start"
