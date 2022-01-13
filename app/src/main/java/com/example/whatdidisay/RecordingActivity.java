@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -58,7 +59,7 @@ public class RecordingActivity extends AppCompatActivity {
     private boolean isRecordingActive = false; // false:= recording has not started, true := currently recording
     private boolean isForwardRecordingActive = false; // false:= forward recording has not started, true := currently recording
     private AlertDialog.Builder builder;
-    private static int seconds = 10; // ToDo: get the number of seconds from settings
+    private int seconds = 10;
     private static final double NUMBER_OF_WORDS_PER_SECOND = 120.0 / 60.0; // Assumed a person says on an average 120 words in a minute.
     private String title = "default title";
     private Location location = null;
@@ -110,6 +111,9 @@ public class RecordingActivity extends AppCompatActivity {
         DatabaseHelper db = new DatabaseHelper(this);
         AlertDialog.Builder infoBuilder = new AlertDialog.Builder(this);
 
+
+        SharedPreferences sharedPrefs = getSharedPreferences(MainActivity.SHARED_PREFS, MODE_PRIVATE);
+        seconds = sharedPrefs.getInt(MainActivity.FW_TIME, 5);
 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
 
@@ -206,9 +210,10 @@ public class RecordingActivity extends AppCompatActivity {
                                     mSpeechRecognizer.stopListening();
                                     // ToDo write text (the value of the entireText variable) in the database
                                     String title = meetingTitle.getText().toString();
+                                    title = title.replaceAll("[^a-zA-Z0-9\\.\\-\\:]", "_"); // Remove unwanted characters from string
                                     String date = meetingDate.getText().toString();
                                     byte[] transcript_text = entireText.getBytes();
-                                    db.addRecording(date, title, transcript_text, null);
+                                    db.addRecording(date, title, transcript_text, null, null);
                                     Recording recording_example = db.getRecording(date, title);
                                     //Toast.makeText(RecordingActivity, recording_example.getTranscription(), Toast.LENGTH_SHORT).show();
                                     //Log.i("entire text:", entireText);
@@ -327,9 +332,12 @@ public class RecordingActivity extends AppCompatActivity {
         TextView dateText = (TextView) findViewById(R.id.transcript_text);
         dateText.setText(currentDate);
         //Set the title to the current time;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Date date = new Date();
         meetingTitle.setText(formatter.format(date));
+        //Get the forward time from the shared preferences
+        SharedPreferences sharedPrefs = getSharedPreferences(MainActivity.SHARED_PREFS, MODE_PRIVATE);
+        seconds = sharedPrefs.getInt(MainActivity.FW_TIME, 5);
     }
 
     public void logLocation() {
