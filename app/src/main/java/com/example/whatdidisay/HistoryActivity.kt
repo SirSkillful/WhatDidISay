@@ -95,7 +95,6 @@ class HistoryActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
         super.onResume()
-        val calendarView = findViewById<MCalendarView>(R.id.calendar_view)
         unmarkDates()
         val sdf = SimpleDateFormat("dd-MMMM- yyyy") // Month name and year
         val currentDate = sdf.format(Date())
@@ -109,7 +108,6 @@ class HistoryActivity : AppCompatActivity() {
 
 // xt view to show the month's name and year in the format specified previously
     }
-    @ExperimentalStdlibApi
     @RequiresApi(Build.VERSION_CODES.M)
     private fun updateMarks(calendarView: MCalendarView, date: DateData){
 
@@ -124,7 +122,6 @@ class HistoryActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd.MM.yyyy") // Standard german date format
         val currentDate =
             sdf.format(calendar.timeInMillis) // Get the selected date in the specified format
-        val todaysDate = calendar.time
 
         clearMeetingPreview()
         buildMeetingPreview(currentDate)
@@ -145,8 +142,7 @@ class HistoryActivity : AppCompatActivity() {
      * Mark all dates that have a rating in the database in the calendar in color
      */
     fun markDates() {
-        val dbHelper = DatabaseHelper(this) // DB Communicator
-        //val dates = dbHelper.getRecording(currentDate) // Get all ratings in the database
+
         val calendarView = findViewById<MCalendarView>(R.id.calendar_view)
         val prevMarks =
             calendarView.markedDates.all.toMutableList() // All marked dates in the calendar view before the update
@@ -191,7 +187,7 @@ class HistoryActivity : AppCompatActivity() {
             val options = arrayOf(".txt", ".pdf")
             val singleChoiceDialog = AlertDialog.Builder(this)
                 .setTitle("Choose file type")
-                .setSingleChoiceItems(options, 0) {dialogInterface, i ->
+                .setSingleChoiceItems(options, 0) {_, i ->
                     Toast.makeText(this, "You clicked on ${options[i]}", Toast.LENGTH_SHORT).show()}
                             .setPositiveButton(
                                 "Export"
@@ -199,7 +195,7 @@ class HistoryActivity : AppCompatActivity() {
                                 exportAsTxt(date, title)
                                 if ((dialog as AlertDialog).listView.isItemChecked(0)) {
                                     exportAsTxt(date, title)
-                                } else if ((dialog as AlertDialog).listView.isItemChecked(1)) {
+                                } else if (dialog.listView.isItemChecked(1)) {
                                     exportAsPdf(date, title)
                                 }
                             }
@@ -285,16 +281,12 @@ class HistoryActivity : AppCompatActivity() {
         catch (e: IOException) {
             Log.i("error", e.getLocalizedMessage())
         }
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun buildMeetingPreview(date: String) {
         clearMeetingPreview()
         val dbHelper = DatabaseHelper(this)
-        val arr = ByteArray(8)
-        //dbHelper.addRecording(date.toString(), date.toString(), arr)
         val titles = dbHelper.getTitles(date)
         val scrollView = findViewById<ScrollView>(R.id.scroll_view)
         for (x in titles){
@@ -361,7 +353,7 @@ class HistoryActivity : AppCompatActivity() {
                         dbHelper.deleteRecording(date, title)
                         clearMeetingPreview()
                         buildMeetingPreview(date)}
-                    DialogInterface.BUTTON_NEGATIVE -> {}
+                    DialogInterface.BUTTON_NEGATIVE -> {dialog.dismiss()}
                 }
             }
         val builder = AlertDialog.Builder(this)
