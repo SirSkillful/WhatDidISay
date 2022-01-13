@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,6 +50,7 @@ public class RecordingActivity extends AppCompatActivity {
     private EditText displayText;
     private ImageButton recordButton;
     private Button backButton;
+    private Button informationButton;
     private ImageButton backwardRecordButton;
     private ImageButton forwardRecordButton;
     private String entireText = ""; // The entire meeting
@@ -102,9 +104,12 @@ public class RecordingActivity extends AppCompatActivity {
         displayText = findViewById(R.id.text_box);
         recordButton = (ImageButton) findViewById(R.id.record_button);
         backButton = (Button) findViewById(R.id.back_button);
+        informationButton = (Button) findViewById(R.id.info_button);
         backwardRecordButton = (ImageButton) findViewById(R.id.backward_record_button);
         forwardRecordButton = (ImageButton) findViewById(R.id.forward_record_button);
         DatabaseHelper db = new DatabaseHelper(this);
+        AlertDialog.Builder infoBuilder = new AlertDialog.Builder(this);
+
 
         mSpeechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
 
@@ -281,6 +286,22 @@ public class RecordingActivity extends AppCompatActivity {
                 } else {
                     finish();
                 }
+            }
+        });
+
+        informationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LayoutInflater factory = LayoutInflater.from(RecordingActivity.this);
+                final View informationView = factory.inflate(R.layout.sample, null);
+                infoBuilder.setView(informationView);
+                infoBuilder.setNeutralButton("Close", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dlg, int sumthin) {
+
+                    }
+                });
+
+                infoBuilder.show();
             }
         });
 
