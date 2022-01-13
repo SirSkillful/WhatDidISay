@@ -300,6 +300,7 @@ class HistoryActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun buildMeetingPreview(date: String) {
+        clearMeetingPreview()
         val dbHelper = DatabaseHelper(this)
         val arr = ByteArray(8)
         //dbHelper.addRecording(date.toString(), date.toString(), arr)
