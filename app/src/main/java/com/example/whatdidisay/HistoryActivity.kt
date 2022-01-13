@@ -109,9 +109,12 @@ class HistoryActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd-MMMM- yyyy") // Month name and year
         val currentDate = sdf.format(Date())
         val dateText = findViewById<TextView>(R.id.calendar_month_text)
-        dateText.text =
-            currentDate // Set the date te
-
+        dateText.text = currentDate // Set the date text
+        // Load all the entries for the current day when loading the app
+        val date = intent.getStringExtra("date")
+        if (date != null) {
+            buildMeetingPreview(date)
+        }
 
 // xt view to show the month's name and year in the format specified previously
     }
