@@ -1,14 +1,11 @@
 package com.example.whatdidisay
 
 import android.Manifest
-import android.R.attr
-import android.R.attr.actionModeShareDrawable
 import android.content.Context
 import android.os.Build
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AlertDialog
@@ -27,21 +24,15 @@ import android.view.LayoutInflater
 import android.widget.*
 import androidx.annotation.RequiresApi
 import java.io.OutputStreamWriter
-import android.os.Environment
 import sun.bob.mcalendarview.MarkStyle
-import sun.bob.mcalendarview.vo.DayData
 import java.io.File
 import androidx.core.content.FileProvider
 import java.io.FileOutputStream
-import java.io.OutputStream as OutputStream
 import androidx.core.app.ActivityCompat
 import android.widget.Toast
 
 import android.content.pm.PackageManager
-import android.provider.DocumentsContract
 
-import androidx.annotation.NonNull
-import android.R.attr.data
 import android.graphics.Canvas
 import android.graphics.Paint
 
@@ -53,6 +44,7 @@ import java.io.IOException
 class HistoryActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     private val STORAGE_PERMISSION_CODE = 1
+    @ExperimentalStdlibApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.history_activity)
@@ -101,6 +93,7 @@ class HistoryActivity : AppCompatActivity() {
      * Overwritten onResume function called when activity is resumed
      * Reloads all the markings when the history activity is opened
      */
+    @ExperimentalStdlibApi
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onResume() {
         super.onResume()
@@ -109,14 +102,22 @@ class HistoryActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd-MMMM- yyyy") // Month name and year
         val currentDate = sdf.format(Date())
         val dateText = findViewById<TextView>(R.id.calendar_month_text)
-        dateText.text =
-            currentDate // Set the date te
-
+        val sdf_year = SimpleDateFormat("yyyy")
+        val sdf_month = SimpleDateFormat("MM")
+        val sdf_day = SimpleDateFormat("dd")
+        val year =  sdf_year.format(Date()).toInt()
+        val month =  sdf_month.format(Date()).toInt()
+        val day =  sdf_day.format(Date()).toInt()
+        val date = DateData(year, month, day)
+        dateText.text = currentDate // Set the date te
+        updateMarks(calendarView, date)
 
 // xt view to show the month's name and year in the format specified previously
     }
+    @ExperimentalStdlibApi
     @RequiresApi(Build.VERSION_CODES.M)
     private fun updateMarks(calendarView: MCalendarView, date: DateData){
+
         val calendar = Calendar.getInstance()
         val time = calendar.time
         calendarView.markDate(DateData(time.year, time.month, time.day).setMarkStyle(MarkStyle.BACKGROUND, Color.parseColor("#393E46")))
@@ -198,17 +199,15 @@ class HistoryActivity : AppCompatActivity() {
                 .setSingleChoiceItems(options, 0) {dialogInterface, i ->
                     Toast.makeText(this, "You clicked on ${options[i]}", Toast.LENGTH_SHORT).show()}
                             .setPositiveButton(
-                                "Export",
-                                DialogInterface.OnClickListener { dialog, id ->
-
-                                    if ((dialog as AlertDialog).listView.isItemChecked(0)) {
-                                        exportAsTxt(date, title)
-                                    }
-                                    else if ((dialog as AlertDialog).listView.isItemChecked(1)){
-                                        exportAsPdf(date, title)
-                                    }
+                                "Export"
+                            ) { dialog, id ->
+                                exportAsTxt(date, title)
+                                if ((dialog as AlertDialog).listView.isItemChecked(0)) {
+                                    exportAsTxt(date, title)
+                                } else if ((dialog as AlertDialog).listView.isItemChecked(1)) {
+                                    exportAsPdf(date, title)
                                 }
-                            )
+                            }
                 .setNegativeButton("cancel",
                                 DialogInterface.OnClickListener { dialog, id ->
                                     // User cancelled the dialog
@@ -254,7 +253,7 @@ class HistoryActivity : AppCompatActivity() {
         requestStoragePermission()
         val dbHelper = DatabaseHelper(this)
         val recording_text = dbHelper.getRecording(date, title)?.transcription?.let {String(it)}
-        val filename = title + ".pdf"
+        val filename = "$title.pdf"
         val filelocation = File(filesDir,"files")
         filelocation.mkdirs()
         //val file = File(filelocation, filename)
@@ -316,7 +315,7 @@ class HistoryActivity : AppCompatActivity() {
             scrollView.visibility = View.VISIBLE
         }
     }
-    fun clearMeetingPreview() {
+    private fun clearMeetingPreview() {
         while (null != findViewById<LinearLayout>(R.id.MeetingPreviewRowLayout)) {
             val v = findViewById<LinearLayout>(R.id.MeetingPreviewRowLayout)
             (v.parent as ViewGroup).removeView(v)
@@ -341,6 +340,7 @@ class HistoryActivity : AppCompatActivity() {
         )
         val meetingName = findViewById<TextView>(R.id.meetingName_row)
         meetingName.text = title
+        meetingName.setTextColor(Color.WHITE)
         var exportDialogBuilder = createExportDialog(date, title)
         val exportButton = findViewById<Button>(R.id.shareButton)
         exportButton.setOnClickListener {
@@ -349,9 +349,31 @@ class HistoryActivity : AppCompatActivity() {
         val editButton = findViewById<Button>(R.id.editButton)
         editButton.setOnClickListener{
             callEditScreen(date, title)
-
+        }
+        val deleteButton = findViewById<Button>(R.id.deleteButton)
+        deleteButton.setOnClickListener{
+            deleteMeeting(date, title)
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun deleteMeeting(date: String, title: String) {
+        val dbHelper = DatabaseHelper(this)
+        val dialogClickListener =
+            DialogInterface.OnClickListener { dialog, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        dbHelper.deleteRecording(date, title)
+                        clearMeetingPreview()
+                        buildMeetingPreview(date)}
+                    DialogInterface.BUTTON_NEGATIVE -> {}
+                }
+            }
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure you want to delete the meeting?").setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener).show()
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(
