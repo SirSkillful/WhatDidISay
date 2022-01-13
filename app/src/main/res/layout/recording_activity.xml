@@ -50,8 +50,9 @@
         android:id="@+id/text_box"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
         android:ems="10"
         android:gravity="start|top"
@@ -59,7 +60,7 @@
         android:inputType="textMultiLine"
         android:textColor="@color/white"
         android:textColorHint="#696969"
-        android:textSize="12sp"
+        android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/record_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -74,18 +75,24 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:backgroundTint="@color/primary_button_color"
+        android:textColor="#FFFFFF"
         app:icon="?attr/homeAsUpIndicator"
+        app:iconTint="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout2"
-        android:layout_width="390dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start|top"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/back_button"
-        tools:layout_editor_absoluteX="10dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back_button">
 
         <TextView
             android:id="@+id/transcript_label"
@@ -94,6 +101,7 @@
             android:layout_weight="0"
             android:text="Date: "
             android:textColor="#FFFFFF"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -102,17 +110,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="date_example"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutTitle"
-        android:layout_width="390dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-        tools:layout_editor_absoluteX="10dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
 
         <TextView
             android:id="@+id/meeting_title_label"
@@ -121,8 +133,9 @@
             android:layout_marginRight="10dp"
             android:layout_weight="0"
             android:text="Meeting Title:"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/meeting_title"
@@ -132,7 +145,8 @@
             android:background="@drawable/white_round_corner_bg"
             android:ems="10"
             android:text="default title"
-            android:textColor="#000000" />
+            android:textColor="#000000"
+            android:textSize="18sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

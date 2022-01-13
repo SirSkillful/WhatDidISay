@@ -8,16 +8,13 @@
     tools:context=".MainActivity" >
 
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="50dp"
         android:layout_marginBottom="20dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
@@ -27,22 +24,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
+            android:singleLine="true"
             android:text="What did I say?"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="40sp"
+            android:textSize="38sp"
             android:textStyle="normal" />
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/transcribe_button"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/secondary_button_color"
+            android:drawableLeft="@drawable/ic_transcribe_button"
+            android:paddingRight="50dp"
+            android:singleLine="true"
             android:text="Transcribe"
+            android:textAlignment="inherit"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="24dp"
+            app:iconSize="24dp"
+            app:iconTint="#000000" />
 
         <Button
             android:id="@+id/history_button"
@@ -50,10 +54,13 @@
             android:layout_height="80dp"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/secondary_button_color"
+            android:drawableLeft="@drawable/ic_history_button"
+            android:paddingRight="65dp"
+            android:singleLine="true"
             android:text="History"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="24dp" />
 
         <Button
             android:id="@+id/analyse_button"
@@ -61,10 +68,13 @@
             android:layout_height="80dp"
             android:layout_marginTop="50dp"
             android:backgroundTint="@color/secondary_button_color"
+            android:drawableLeft="@drawable/ic_analyse_button"
+            android:paddingRight="60dp"
+            android:singleLine="true"
             android:text="Analyse"
             android:textAllCaps="false"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="24dp" />
 
     </LinearLayout>
 

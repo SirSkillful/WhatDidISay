@@ -4,14 +4,23 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/dark_round_background.xml" value="0.5703125" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/ic_analyse_button.xml" value="0.3494791666666667" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/ic_history_button.xml" value="0.3494791666666667" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/ic_record_button.xml" value="0.5703125" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/ic_settings_button.xml" value="0.5703125" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/ic_transcribe_button.xml" value="0.5703125" />
         <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/drawable/white_round_corner_bg.xml" value="0.5703125" />
         <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/activity_main.xml" value="0.33" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/edit_activity.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/analysis_activity.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/edit_activity.xml" value="0.5" />
         <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/export_dialog.xml" value="0.5541666666666667" />
         <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/history_activity.xml" value="0.5" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/history_edit_row.xml" value="0.5541666666666667" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/recording_activity.xml" value="0.5" />
-        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/settings_activity.xml" value="0.5541666666666667" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/history_edit_row.xml" value="0.5" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/recording_activity.xml" value="0.67" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/recording_dialog.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/layout/settings_activity.xml" value="0.5978169605373636" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.5703125" />
+        <entry key="..\:/Users/david/AndroidStudioProjects/WhatDidISay/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.5703125" />
         <entry key="..\:/Users/hendr/Documents/GitHub/MID/WhatDidISay/app/src/main/res/drawable/ic_launcher_background.xml" value="0.25729166666666664" />
         <entry key="..\:/Users/hendr/Documents/GitHub/MID/WhatDidISay/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/hendr/Documents/GitHub/MID/WhatDidISay/app/src/main/res/layout/history_activity.xml" value="0.33" />

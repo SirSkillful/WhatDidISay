@@ -4,7 +4,7 @@
         <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
         <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
         <item name="android:background">@color/background</item>
-        <item name="android:textColorPrimary">@color/text_color</item>
+        <item name="android:textColorPrimary">@color/white</item>
         <item name="android:gravity">left</item>
     </style>
 

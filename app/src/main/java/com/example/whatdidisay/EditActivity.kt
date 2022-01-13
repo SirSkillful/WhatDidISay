@@ -40,11 +40,11 @@ class EditActivity : AppCompatActivity() {
             super.onBackPressed()
         }
 
-        val imageButton = findViewById<Button>(R.id.add_image_button)
-        imageButton.setOnClickListener {
+        //val imageButton = findViewById<Button>(R.id.add_image_button)
+        //imageButton.setOnClickListener {
             // Open image finding dialog to get image from gallery
             // Add image to the view
-        }
+        //}
     }
 
     /**

@@ -14,6 +14,7 @@ import android.R.attr.data
 import android.net.Uri
 import android.R.attr.data
 import android.app.Activity
+import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 
@@ -72,14 +73,14 @@ class SettingsActivity : AppCompatActivity() {
         }
         */
 
-        val forwardInput = findViewById<TextView>(R.id.forward_time_input)
+        val forwardInput = findViewById<EditText>(R.id.forward_time_input)
         forwardInput.doAfterTextChanged {
             //Save new value in shared preferences
             if (forwardInput.text.isNotEmpty()){
-                editor.putInt(MainActivity.FW_TIME, forwardInput.text.toString().toInt())
-                Log.d("TEST", forwardInput.text as String)
+                editor.putInt(MainActivity.FW_TIME, Integer.parseInt(forwardInput.text.toString()))
+                editor.apply()
             } else {
-                editor.putInt(MainActivity.FW_TIME, 1)
+                forwardInput.setText("1")
             }
 
         }
@@ -91,7 +92,7 @@ class SettingsActivity : AppCompatActivity() {
 
         //Load entries from shared preferences
         val forwardInput = findViewById<TextView>(R.id.forward_time_input)
-        //forwardInput.text = sharedPrefs.getInt(MainActivity.FW_TIME, 5).toString() //TODO Fix issue translating the value to a string
+        forwardInput.text = sharedPrefs.getInt(MainActivity.FW_TIME, 5).toString()
         val expLocInput = findViewById<TextView>(R.id.export_path_input)
         expLocInput.text = sharedPrefs.getString(MainActivity.EXPORT_LOC, "")
         //val audioLocInput = findViewById<TextView>(R.id.audio_path_input)
