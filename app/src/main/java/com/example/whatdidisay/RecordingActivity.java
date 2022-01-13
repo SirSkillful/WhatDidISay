@@ -299,14 +299,16 @@ public class RecordingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 LayoutInflater factory = LayoutInflater.from(RecordingActivity.this);
                 final View informationView = factory.inflate(R.layout.sample, null);
-                infoBuilder.setView(informationView);
-                infoBuilder.setNeutralButton("Close", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dlg, int sumthin) {
+                builder.setView(informationView);
+                builder.setNegativeButton(
+                        "Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
 
-                    }
-                });
-
-                infoBuilder.show();
+                builder.show();
             }
         });
 
